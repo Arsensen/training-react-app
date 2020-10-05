@@ -1,0 +1,18 @@
+.messages{
+    display: grid;
+    grid-template-areas: "n m";
+    grid-template-columns: 2fr 10fr;
+    background-color: antiquewhite;
+    grid-gap: 5px;
+}
+
+.nameList{
+    grid-area: 'n';
+    min-height: 300px;
+    background-color: rgb(152, 201, 186);
+}
+
+.messageList{
+    grid-area: 'm';
+    background-color: rgb(152, 201, 186);
+}
