@@ -8,7 +8,6 @@ let initialPosts = {
 
 const postsReducer = (state = initialPosts, action)=>{
     let newState = {...state}
-    debugger
     if(action.type === ADD_POST){
         if(state.valueTimed.title){
             newState.cache = [...state.cache, {...state.valueTimed}]
