@@ -16,7 +16,7 @@ function App({store}) {
       <div className='mcontentCover'>
         <Route exact path='/' component={MainContent} />
         <Route path='/profile' component={MainContent} />
-        <Route path='/messages' component={Messages.bind(null, {store})} />
+        <Route path='/messages' component={Messages} />
       </div>
       <footer className='footer'></footer>
     </div>

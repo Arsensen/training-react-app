@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom'
 
 
 function Navbar({store}){
-    debugger
     return(
         <div className='navbar'>
             <ul>

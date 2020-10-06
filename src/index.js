@@ -16,7 +16,6 @@ let Render = (data) => {
     </React.StrictMode>,
   document.getElementById('root')
 )}
-debugger
 
 Render(store.getState())
 
