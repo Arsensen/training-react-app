@@ -1,21 +1,13 @@
 import React from 'react'
 import { createRef } from 'react'
 
-function Form({store, idt}){
+function Form({store, handler, handler2, clear}){
     let textarea = createRef()
-    function handler(event){
-        event.preventDefault()
-        let newValue ={type: `ADD_${idt.toUpperCase()}`}
-        store.dispatch(newValue)
-        textarea.current.value = ''
-    }
-
-    function handler2(event){
-        store.dispatch({type: `UPDATE_NEW_${idt.toUpperCase()}`, title: event.target.value, id: new Date() })
-    }
-
     return(
-        <form onSubmit={handler}>
+        <form onSubmit={(event)=>{
+            handler(event);
+            clear(textarea)
+            }}>
             <textarea ref={textarea} onChange={handler2} />
             <button>post</button>
         </form>

@@ -1,6 +1,7 @@
 import React from 'react'
 import List from './List'
-import Form from './Form'
+/* import Form from './Form' */
+import ContainerToForm from '../../Container/containerToForm.jsx'
 import Styles from './CSS/MainContent.module.css'
 import Context from '../../Context'
 
@@ -23,7 +24,8 @@ function MainContent(){
                                 </span>
                             </div>
                         </div>
-                        <Form store={store} idt='post'/>
+                        {/* <Form store={store} idt='post'/> */}
+                        <ContainerToForm />
                         <List store = {store} idt='post' image={image}/>
                     </div>)
             }
