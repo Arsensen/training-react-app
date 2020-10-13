@@ -9,6 +9,8 @@ const usersReducer = (state = initialState, action)=>{
     if(action.type === CHANGE_FOLLOW){
         newState = [...state]
         newState[action.index].followed = state[action.index].followed === 'followed'? 'unfollowed': 'followed'
+    } else if(action.type === 'ADD_USER'){
+        newState = [...state, {...action.users}]
     }
     return newState
 }
