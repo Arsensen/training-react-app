@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Header from './Elements/Header';
-import MainContent from './Elements/MainContent/MainContent';
+import MainContainer from './Elements/MainContent/MainContainer';
 import Messages from './Elements/Messages/Messages';
 import Navbar from './Elements/Navbar';
 import Users from './Elements/Users/Users'
@@ -15,8 +15,9 @@ function App({store}) {
       <Header />
       <Navbar  store = {store} />
       <div className='mcontentCover'>
-        <Route exact path='/' component={MainContent} />
-        <Route path='/profile' component={MainContent} />
+        <Route exact path='/' component={MainContainer} />
+        <Route exact path='/profile' component={MainContainer} />
+        <Route path='/profile/:userID' component={MainContainer} />
         <Route path='/messages' component={Messages} />
         <Route path='/users' component={Users} />
       </div>

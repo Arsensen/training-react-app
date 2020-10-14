@@ -63,3 +63,23 @@
     font-style: italic;
 }
 
+.checkedPage{
+    font-weight: bold;
+    color: red;
+    border-bottom: 2px solid red;
+}
+
+.pages{
+    display: flex;
+    max-width: 400px;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.pages span{
+    cursor: pointer;
+}
+
+.pages span:hover{
+    opacity: 0.5;
+}
