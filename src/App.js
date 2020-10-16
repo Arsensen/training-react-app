@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Header from './Elements/Header';
+import HeaderContainer from './Elements/Header/HeaderContainer';
 import MainContainer from './Elements/MainContent/MainContainer';
 import Messages from './Elements/Messages/Messages';
 import Navbar from './Elements/Navbar';
@@ -12,11 +12,11 @@ function App({store}) {
   return (
     <BrowserRouter>
     <div className="App">
-      <Header />
+      <HeaderContainer />
       <Navbar  store = {store} />
       <div className='mcontentCover'>
         <Route exact path='/' component={MainContainer} />
-        <Route exact path='/profile' component={MainContainer} />
+        {<Route exact path='/profile' component={MainContainer} />}
         <Route path='/profile/:userID' component={MainContainer} />
         <Route path='/messages' component={Messages} />
         <Route path='/users' component={Users} />

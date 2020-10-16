@@ -8,9 +8,9 @@ import * as Axios from 'axios'
 class MainContent extends React.Component{
     
     componentDidMount(){
+        if(!this.props.match.params.userID) return
         Axios.get( 'https://social-network.samuraijs.com/api/1.0/profile/' + this.props.match.params.userID)
             .then(response=>{
-                debugger
                 this.props.addProfile({photo: response.data.photos.large, name: response.data.fullName})
             })
     }
