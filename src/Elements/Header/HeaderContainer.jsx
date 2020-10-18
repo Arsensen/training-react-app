@@ -22,7 +22,7 @@ let mapToState = (state)=>{
 
 let mapToDispatch = (dispatch)=>{
     return {
-        setProfile: ()=>data().then(profile=> dispatch({type: 'ADD_PROFILE', profile}))
+        setProfile: ()=> dispatch( data() )
     }
 }
 

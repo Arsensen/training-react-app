@@ -1,13 +1,19 @@
 
 let initialState = {
-    photo: "https://i.pinimg.com/736x/98/2b/01/982b012530231e444573cc35bdeed3cd.jpg",
-    name: 'Ellie'
+    users:{
+        photo: "https://i.pinimg.com/736x/98/2b/01/982b012530231e444573cc35bdeed3cd.jpg",
+        name: 'Ellie'
+    },
+    authorized: false
 }
 
 const usersReducer = (state = initialState, action)=>{
     let newState ={...state}
     if(action.type === 'ADD_PROFILE'){
-        newState = {...action.profile}
+        newState.users = {...action.profile}
+    }
+    else if(action.type === 'AUTHORIZED'){
+        newState.authorized = true
     }
     return newState
 }

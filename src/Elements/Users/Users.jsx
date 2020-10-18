@@ -1,14 +1,15 @@
-import * as Axios from 'axios'
 import React from 'react'
 import { connect } from 'react-redux'
 import UserBlock from './UserBlock'
 import styles from './CSS/Users.module.css'
-import { unfollow } from '../../Fetchers/fetchData'
+import { unfollow, pages } from '../../Fetchers/fetchData'
+import { compose } from 'redux'
+import { hocLogin } from '../../hocLogin'
 
 class Users extends React.Component{
     
     render(){
-        let pages = [1, 2, 3, 4, 5]
+        let pages = [1, 2, 3, 4, 5, 6]
 
         return(
             <React.Fragment>
@@ -18,7 +19,7 @@ class Users extends React.Component{
                 </div>
                 <div>
                     {this.props.userStore.users.map((user, index)=>{
-                        return (<UserBlock key={user.name + Math.random()} index={index} user={user} follower={this.props.follower} serverUnfollow={this.props.serverUnfollow}/>)
+                        return (<UserBlock key={user.name + Math.random()} index={index} userStore={this.props.userStore} user={user} follower={this.props.follower} serverUnfollow={this.props.serverUnfollow}/>)
                     })}
                 </div>
             </React.Fragment>
@@ -26,43 +27,22 @@ class Users extends React.Component{
     }
 }
 
-const userstr = (state)=>{
+const mapState = (state)=>{
     return {
-        userStore: {...state.users}
+        userStore: {...state.users},
+        authorized: state.profile.authorized
     }
 }
 
-const handlers = (dispatch)=>{
+const mapDispatch = (dispatch)=>{
     return {
-        follower: (index)=>{
-            debugger
-            dispatch({type: 'CHANGE_FOLLOW', index: index})},
-        adder: (count)=> {
-            Axios.get('https://social-network.samuraijs.com/api/1.0/users?page=' + count, {withCredentials: true})
-                .then((response) => {
-                    let arrays = response.data.items
-                    let arr = arrays.map((array)=>{
-                        return {
-                            name: array.name,
-                            src: array.photos.small || 'https://klike.net/uploads/posts/2019-03/medium/1551512888_2.jpg',
-                            slogan: array.status,
-                            city: array.country,
-                            followed: array.followed ? 'followed' : 'unfollowed',
-                            id: array.id
-                        }
-                    })
-                    dispatch({type: 'GET_USERS', users: arr})
-                })
-            },
-        changeCount: (num)=>{dispatch({type: 'CHANGE_COUNT', count: num})},
-        serverUnfollow: (id, callback)=>{
-            debugger
-            unfollow(id, callback)  /* .then(()=>callback()) */
-            debugger
-        }
+            follower: (index)=>dispatch({type: 'CHANGE_FOLLOW', index: index}),
+            adder: (count)=> { dispatch(pages(count)) },
+            changeCount: (num)=>dispatch({type: 'CHANGE_COUNT', count: num}),
+            serverUnfollow: (id, callback, followed, userStore)=> dispatch(unfollow(id, callback, followed, userStore))
         }
     }
 
-const connectedUser = connect(userstr, handlers)(Users)
-
-export default connectedUser
+export default compose(
+    connect(mapState, mapDispatch),
+    hocLogin)(Users)

@@ -8,15 +8,51 @@ const instance = Axios.create({
     }
 })
 
-export const data = ()=> instance.get('auth/me').then(response=>{
-    return {
-        name: response.data.data.login,
-        photo: undefined
+export const data = ()=> (dispatch)=> instance.get('auth/me')
+    .then(response=>{
+        dispatch({type: 'ADD_PROFILE', profile: {
+            name: response.data.data.login,
+            photo: undefined
+        }})
+        !response.resultCode && dispatch({type: 'AUTHORIZED'})
     }
-})
+)
 
-export const unfollow = (id, callback)=> {
-    instance.post('follow/' + id , {}).then(response=>{
-        !response.data.resultCode && callback()
-    })
+export const unfollow = (id, callback, followed, userStore)=> (dispatch)=> {
+    if(userStore.isFetching) return
+    dispatch({type: 'CHANGE_FETCHING', isFetching: true})
+    let follow = followed ==='followed'? instance.delete('follow/' + id , {}) : instance.post('follow/' + id , {})
+    follow.then(response=>{
+                !response.data.resultCode && callback()
+                dispatch({type: 'CHANGE_FETCHING', isFetching: false})
+            })
+}
+
+
+export const pages = (count)=> (dispatch)=> {
+        instance.get('users?page=' + count)
+                .then((response) => {
+                    let arrays = response.data.items
+                    let arr = arrays.map((array)=>{
+                        return {
+                            name: array.name,
+                            src: array.photos.small || 'https://klike.net/uploads/posts/2019-03/medium/1551512888_2.jpg',
+                            slogan: array.status,
+                            city: array.country,
+                            followed: array.followed ? 'followed' : 'unfollowed',
+                            id: array.id
+                        }
+                    })
+                    dispatch({type: 'GET_USERS', users: arr})
+                })
+    
+}
+
+export const fetchID = (id, addProfile)=>(dispatch)=>{
+    if(!id) return
+    instance.get( 'profile/' + id)
+        .then(response=>{
+                addProfile({photo: response.data.photos.large, name: response.data.fullName})
+            }
+        )
 }

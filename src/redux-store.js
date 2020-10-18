@@ -1,10 +1,11 @@
-import {createStore, combineReducers} from 'redux'
+import {createStore, combineReducers, applyMiddleware} from 'redux'
 import navbarReducer from './Reducers/navbarReducer'
 import postsReducer from './Reducers/postsReducer'
 import messagesReducer from './Reducers/messagesReducer'
 import namesReducer from './Reducers/namesReducer'
 import usersReducer from './Reducers/usersReducer'
 import profileReducer from './Reducers/profileReducer'
+import thunk from 'redux-thunk'
 
 const reducersBatch = combineReducers({
     navbar: navbarReducer,
@@ -15,7 +16,7 @@ const reducersBatch = combineReducers({
     profile: profileReducer
 })
 
-const store = createStore(reducersBatch)
+const store = createStore(reducersBatch, applyMiddleware(thunk))
 
 export default store
 window.store = store

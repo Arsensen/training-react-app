@@ -6,6 +6,7 @@ import Messages from './Elements/Messages/Messages';
 import Navbar from './Elements/Navbar';
 import Users from './Elements/Users/Users'
 import { BrowserRouter, Route } from 'react-router-dom';
+import Login from './Elements/Login';
 
 
 function App({store}) {
@@ -15,6 +16,7 @@ function App({store}) {
       <HeaderContainer />
       <Navbar  store = {store} />
       <div className='mcontentCover'>
+        <Route path='/login' component={Login} />
         <Route exact path='/' component={MainContainer} />
         {<Route exact path='/profile' component={MainContainer} />}
         <Route path='/profile/:userID' component={MainContainer} />

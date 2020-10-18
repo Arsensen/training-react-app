@@ -6,7 +6,9 @@ import MCSS from './CSS/Messages.module.css'
 import { Route } from 'react-router-dom'
 import Context from '../../Context';
 import ContainerToMessage from '../../Container/containerToMessages'
-
+import { hocLogin } from '../../hocLogin'
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 function Messages(){
     return( 
@@ -20,11 +22,19 @@ function Messages(){
                         <ContainerToMessage />
                         {/* <Form store={store} idt='message'/> */}
                         <List store={store} idt='message'/>
-                    </div>    
+                    </div>
                 </div>)
             }       
         </Context.Consumer>
     )
 }
 
-export default Messages
+let mapState =(state)=>{
+    return {
+        authorized: state.profile.authorized
+    }
+}
+
+export default compose(
+    connect(mapState),
+    hocLogin)(Messages)
