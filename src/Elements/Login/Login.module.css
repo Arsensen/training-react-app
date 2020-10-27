@@ -1,0 +1,11 @@
+.error{
+    border: 2px solid red;
+}
+
+.touched{
+    border: 2px solid green;
+}
+
+.default{
+    border-color: royalblue;
+}

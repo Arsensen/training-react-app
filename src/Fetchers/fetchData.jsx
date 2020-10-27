@@ -18,6 +18,23 @@ export const data = ()=> (dispatch)=> instance.get('auth/me')
     }
 )
 
+export const login = ({email, password, rememberMe})=>(dispatch)=>{
+    instance.post('auth/login', {email, password, rememberMe})
+        .then(
+            response=>{
+                (response.data.resultCode === 0) && dispatch(data())
+            }
+        )
+}
+
+export const logout = ()=>(dispatch)=>{
+    instance.delete('auth/login')
+            .then(response=>{
+                debugger
+                response.data.resultCode === 0 && dispatch({type: 'UNAUTHORIZED'})
+            })
+}
+
 export const unfollow = (id, callback, followed, userStore)=> (dispatch)=> {
     if(userStore.isFetching) return
     dispatch({type: 'CHANGE_FETCHING', isFetching: true})

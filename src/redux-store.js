@@ -6,6 +6,10 @@ import namesReducer from './Reducers/namesReducer'
 import usersReducer from './Reducers/usersReducer'
 import profileReducer from './Reducers/profileReducer'
 import thunk from 'redux-thunk'
+import * as finalForm from 'react-final-form'
+import formReducer from './Reducers/formReducer'
+
+console.log(finalForm)
 
 const reducersBatch = combineReducers({
     navbar: navbarReducer,
@@ -13,7 +17,8 @@ const reducersBatch = combineReducers({
     messages: messagesReducer,
     names: namesReducer,
     users: usersReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    finalForm: formReducer
 })
 
 const store = createStore(reducersBatch, applyMiddleware(thunk))

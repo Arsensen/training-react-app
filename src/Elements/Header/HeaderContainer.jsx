@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Header from './Header'
-import {data} from '../../Fetchers/fetchData'
+import {logout} from '../../Fetchers/fetchData'
 
 class HeaderContainer extends React.Component{
     render(){
         return (
             <>
-                <Header setProfile ={this.props.setProfile}/>
+                <Header resetProfile ={this.props.resetProfile}/>
             </>
         )
     }
@@ -22,7 +22,7 @@ let mapToState = (state)=>{
 
 let mapToDispatch = (dispatch)=>{
     return {
-        setProfile: ()=> dispatch( data() )
+        resetProfile: ()=> dispatch( logout() )
     }
 }
 

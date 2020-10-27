@@ -6,7 +6,7 @@ import Messages from './Elements/Messages/Messages';
 import Navbar from './Elements/Navbar';
 import Users from './Elements/Users/Users'
 import { BrowserRouter, Route } from 'react-router-dom';
-import Login from './Elements/Login';
+import Login from './Elements/Login/Login';
 
 
 function App({store}) {

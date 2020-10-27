@@ -15,6 +15,9 @@ const usersReducer = (state = initialState, action)=>{
     else if(action.type === 'AUTHORIZED'){
         newState.authorized = true
     }
+    else if(action.type === 'UNAUTHORIZED'){
+        newState.authorized = false
+    }
     return newState
 }
 
