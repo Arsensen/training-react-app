@@ -30,23 +30,24 @@ export const login = ({email, password, rememberMe})=>(dispatch)=>{
 export const logout = ()=>(dispatch)=>{
     instance.delete('auth/login')
             .then(response=>{
-                debugger
                 response.data.resultCode === 0 && dispatch({type: 'UNAUTHORIZED'})
             })
 }
 
-export const unfollow = (id, callback, followed, userStore)=> (dispatch)=> {
-    if(userStore.isFetching) return
+export const unfollow = (user, index)=> (dispatch, getState)=> {
+    debugger
+    if(getState().users.isFetching) return
     dispatch({type: 'CHANGE_FETCHING', isFetching: true})
-    let follow = followed ==='followed'? instance.delete('follow/' + id , {}) : instance.post('follow/' + id , {})
+    let follow = user.followed ==='followed'? instance.delete('follow/' + user.id , {}) : instance.post('follow/' + user.id, {})
     follow.then(response=>{
-                !response.data.resultCode && callback()
+                !response.data.resultCode && dispatch({ type: 'CHANGE_FOLLOW', index: index })
                 dispatch({type: 'CHANGE_FETCHING', isFetching: false})
             })
 }
 
 
 export const pages = (count)=> (dispatch)=> {
+        dispatch({type: 'CHANGE_COUNT', count})
         instance.get('users?page=' + count)
                 .then((response) => {
                     let arrays = response.data.items
@@ -69,7 +70,7 @@ export const fetchID = (id, addProfile)=>(dispatch)=>{
     if(!id) return
     instance.get( 'profile/' + id)
         .then(response=>{
-                addProfile({photo: response.data.photos.large, name: response.data.fullName})
+                dispatch({type: 'ADD_PROFILE', profile: {photo: response.data.photos.large, name: response.data.fullName, id: response.data.UserId}})
             }
         )
 }

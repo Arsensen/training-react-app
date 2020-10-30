@@ -2,7 +2,8 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styles from './CSS/Users.module.css'
 
-const UserBlock = ({user, follower, index, serverUnfollow, userStore})=>{
+const UserBlock = ({user, serverUnfollow, index})=>{
+    
     return (
         <div className={styles.userBlock}>
             <div className={styles.userName}>{user.name}</div>
@@ -11,7 +12,7 @@ const UserBlock = ({user, follower, index, serverUnfollow, userStore})=>{
                     <NavLink to={'/profile/'+ user.id}>
                         <img className={styles.userImage} src={user.src} alt="Foto"/>
                     </NavLink>
-                    <button onClick={()=>{serverUnfollow(user.id, follower.bind(null,index), user.followed, userStore)}} className={user.followed === 'followed'? styles.userButton : styles.userButton + ' ' + styles.userButtonUn}>{user.followed}</button>
+                    <button onClick={()=>{serverUnfollow(user, index)}} className={user.followed === 'followed'? styles.userButton : styles.userButton + ' ' + styles.userButtonUn}>{user.followed}</button>
                 </span>
                 <span className={styles.userRightBlock}>
                     <span className={styles.userSlogan}>{user.slogan}</span>

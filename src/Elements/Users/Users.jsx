@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import UserBlock from './UserBlock'
 import styles from './CSS/Users.module.css'
@@ -6,40 +6,57 @@ import { unfollow, pages } from '../../Fetchers/fetchData'
 import { compose } from 'redux'
 import { hocLogin } from '../../hocLogin'
 
-class Users extends React.Component{
-    
-    render(){
-        let pages = [1, 2, 3, 4, 5, 6]
+const Users = ({adder, users, serverUnfollow})=> {
+        const [pages, setPages] = useState([1, 2, 3, 4, 5])
+
+        function right(last){
+            if(last === 100) return
+            let array = []
+            for(let i = last+1; i<=last+5; i++){
+                array.push(i)
+            }
+            setPages(array)
+        }
+
+        function left(first){
+            if(first === 1) return
+            let array = []
+            for(let i = first-5; i<=first-1; i++){
+                array.push(i)
+            }
+            setPages(array)
+        }
+        
+        useEffect(adder.bind(null, pages[0]), [])
 
         return(
             <React.Fragment>
                 <h2>Users</h2>
                 <div className={styles.pages}>
-                    {pages.map((num => <span onClick={()=>{this.props.changeCount(num); this.props.adder(num)}} className={this.props.userStore.count === num? styles.checkedPage: ''} key={num+'page'}>{num}</span>))}
+                    <button onClick={()=>{left(pages[0])}}>left</button>
+                    {pages.map((num => <span onClick={()=>{adder(num)}} className={users.count === num ? styles.checkedPage : ''} key={num}>{num}</span>))}
+                    <button onClick={()=>right(pages[4])}>right</button>
                 </div>
                 <div>
-                    {this.props.userStore.users.map((user, index)=>{
-                        return (<UserBlock key={user.name + Math.random()} index={index} userStore={this.props.userStore} user={user} follower={this.props.follower} serverUnfollow={this.props.serverUnfollow}/>)
+                    {users.users.map((user, index)=>{
+                        return (<UserBlock key={user.name} index={index} user={user} serverUnfollow={serverUnfollow}/>)
                     })}
                 </div>
             </React.Fragment>
         )
-    }
 }
 
 const mapState = (state)=>{
     return {
-        userStore: {...state.users},
+        users: {...state.users},
         authorized: state.profile.authorized
     }
 }
 
 const mapDispatch = (dispatch)=>{
     return {
-            follower: (index)=>dispatch({type: 'CHANGE_FOLLOW', index: index}),
             adder: (count)=> { dispatch(pages(count)) },
-            changeCount: (num)=>dispatch({type: 'CHANGE_COUNT', count: num}),
-            serverUnfollow: (id, callback, followed, userStore)=> dispatch(unfollow(id, callback, followed, userStore))
+            serverUnfollow: (user, index)=> dispatch(unfollow(user, index))
         }
     }
 

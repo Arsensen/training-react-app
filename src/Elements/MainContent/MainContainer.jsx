@@ -18,8 +18,7 @@ function mapState(store){
 
 function mapDispatch(dispatch){
     return{
-        addProfile: (profile)=>{dispatch({type: 'ADD_PROFILE', profile})},
-        getID: (id, addProfile)=>{dispatch(fetchID(id, addProfile))}
+        getID: (id)=>{dispatch(fetchID(id)); console.log('launched')}
     }
 }
 

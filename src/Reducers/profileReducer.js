@@ -4,7 +4,7 @@ let initialState = {
         photo: "https://i.pinimg.com/736x/98/2b/01/982b012530231e444573cc35bdeed3cd.jpg",
         name: 'Ellie'
     },
-    authorized: false
+    authorized: true
 }
 
 const usersReducer = (state = initialState, action)=>{
