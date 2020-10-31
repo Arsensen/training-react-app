@@ -8,7 +8,7 @@ import { hocLogin } from '../../hocLogin'
 
 const Users = ({adder, users, serverUnfollow})=> {
         const [pages, setPages] = useState([1, 2, 3, 4, 5])
-
+    
         function right(last){
             if(last === 100) return
             let array = []
@@ -17,7 +17,7 @@ const Users = ({adder, users, serverUnfollow})=> {
             }
             setPages(array)
         }
-
+    
         function left(first){
             if(first === 1) return
             let array = []
@@ -26,16 +26,16 @@ const Users = ({adder, users, serverUnfollow})=> {
             }
             setPages(array)
         }
-        
-        useEffect(adder.bind(null, pages[0]), [])
-
+    
+        useEffect(adder.bind(null, pages[0]), [pages])
+    
         return(
             <React.Fragment>
                 <h2>Users</h2>
                 <div className={styles.pages}>
                     <button onClick={()=>{left(pages[0])}}>left</button>
                     {pages.map((num => <span onClick={()=>{adder(num)}} className={users.count === num ? styles.checkedPage : ''} key={num}>{num}</span>))}
-                    <button onClick={()=>right(pages[4])}>right</button>
+                    <button onClick={()=>{right(pages[4])}}>right</button>
                 </div>
                 <div>
                     {users.users.map((user, index)=>{

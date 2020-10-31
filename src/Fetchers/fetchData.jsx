@@ -35,7 +35,6 @@ export const logout = ()=>(dispatch)=>{
 }
 
 export const unfollow = (user, index)=> (dispatch, getState)=> {
-    debugger
     if(getState().users.isFetching) return
     dispatch({type: 'CHANGE_FETCHING', isFetching: true})
     let follow = user.followed ==='followed'? instance.delete('follow/' + user.id , {}) : instance.post('follow/' + user.id, {})
@@ -47,7 +46,6 @@ export const unfollow = (user, index)=> (dispatch, getState)=> {
 
 
 export const pages = (count)=> (dispatch)=> {
-        dispatch({type: 'CHANGE_COUNT', count})
         instance.get('users?page=' + count)
                 .then((response) => {
                     let arrays = response.data.items
@@ -61,7 +59,7 @@ export const pages = (count)=> (dispatch)=> {
                             id: array.id
                         }
                     })
-                    dispatch({type: 'GET_USERS', users: arr})
+                    dispatch({type: 'GET_USERS', users: arr, count})
                 })
     
 }

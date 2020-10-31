@@ -1,25 +1,26 @@
 import React from 'react';
 import './App.css';
 import HeaderContainer from './Elements/Header/HeaderContainer';
-import MainContainer from './Elements/MainContent/MainContainer';
+import Profile from './Elements/MainContent/ProfileContainer';
 import Messages from './Elements/Messages/Messages';
 import Navbar from './Elements/Navbar';
-import Users from './Elements/Users/Users'
-import { BrowserRouter, Route } from 'react-router-dom';
+import Users from './Elements/Users/Users';
 import Login from './Elements/Login/Login';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 
-function App({store}) {
+
+function App() {
   return (
     <BrowserRouter>
     <div className="App">
       <HeaderContainer />
-      <Navbar  store = {store} />
+      <Navbar />
       <div className='mcontentCover'>
         <Route path='/login' component={Login} />
-        <Route exact path='/' component={MainContainer} />
-        {<Route exact path='/profile' component={MainContainer} />}
-        <Route path='/profile/:userID' component={MainContainer} />
+        <Route exact path='/' component={Profile} />
+        <Route exact path='/profile' component={Profile} />
+        <Route path='/profile/:userID' component={Profile} />
         <Route path='/messages' component={Messages} />
         <Route path='/users' component={Users} />
       </div>

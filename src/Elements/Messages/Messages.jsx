@@ -4,33 +4,29 @@ import List from '../MainContent/List'
 import NameList from './NameList'
 import MCSS from './CSS/Messages.module.css'
 import { Route } from 'react-router-dom'
-import Context from '../../Context';
-import ContainerToMessage from '../../Container/containerToMessages'
+import ContainerToForm from '../../Container/containerToForm'
 import { hocLogin } from '../../hocLogin'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-function Messages(){
-    return( 
-        <Context.Consumer>
-            {store =>(
+function Messages({messageState, names}){
+    return(
                 <div className={MCSS.messages}>
                     <div className={MCSS.nameList}>
-                        <Route path='/messages' component={NameList.bind(this, {names: store.getState().names, key:store.getState().names.id})}></Route>
+                        <Route path='/messages' component={NameList.bind(null, {names})}></Route>
                     </div>
                     <div className={MCSS.messageList}>
-                        <ContainerToMessage />
-                        {/* <Form store={store} idt='message'/> */}
-                        <List store={store} idt='message'/>
+                        <ContainerToForm from={'MESSAGE'} />
+                        <List state={messageState} />
                     </div>
-                </div>)
-            }       
-        </Context.Consumer>
+                </div>   
     )
 }
 
 let mapState =(state)=>{
     return {
+        names: [...state.names],
+        messageState: [...state.messages.cache],
         authorized: state.profile.authorized
     }
 }

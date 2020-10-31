@@ -1,14 +1,15 @@
 import React from 'react'
 import { createRef } from 'react'
 
-function Form({store, handler, handler2, clear}){
+function Form({submitter, changer, clear, from}){
     let textarea = createRef()
+    debugger
     return(
         <form onSubmit={(event)=>{
-            handler(event);
+            submitter(event, from)
             clear(textarea)
-            }}>
-            <textarea ref={textarea} onChange={handler2} />
+        }}>
+            <textarea ref={textarea} onChange={(event)=>changer(event, from)} />
             <button>post</button>
         </form>
     )

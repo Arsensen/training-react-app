@@ -1,30 +1,24 @@
 import { connect } from 'react-redux'
 import Form from '../Elements/MainContent/Form'
 
+//type
 
 const handlerWrap =(dispatch)=>{
     return {
-    
-        handler: (event) => {
+        submitter: (event, from) => {
             event.preventDefault()
-            dispatch({type: `ADD_POST`})
+            dispatch({type: `ADD_${from}`})
         },
 
-        handler2: function handler2(event){
-            dispatch({type: `UPDATE_NEW_POST`, title: event.target.value, id: new Date() })
+        changer: (event, from)=>{
+            if(!event.target.value.trim()) return
+            dispatch({type: `UPDATE_NEW_${from}`, title: event.target.value, id: new Date() })
         },
 
-        clear: function clear(textarea){
+        clear: (textarea)=>{
             textarea.current.value = ''
         }
-
     }
 }
 
-const storage = (state)=>{
-    return {store: state.posts}
-}
-
-
-const connected = connect(storage, handlerWrap)(Form)
-export default connected
+export default connect(null, handlerWrap)(Form)
