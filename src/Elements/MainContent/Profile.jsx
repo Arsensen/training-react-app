@@ -1,6 +1,6 @@
 import React from 'react'
 import List from './List'
-import ContainerToForm from '../../Container/containerToForm.jsx'
+import Form from './Form'
 import Styles from './CSS/MainContent.module.css'
 import { useEffect } from 'react'
 
@@ -20,7 +20,7 @@ const MainContent =({getID, match, profileState, postState})=>{
                         </span>
                     </div>
                 </div>
-                <ContainerToForm from={'POST'} />
+                <Form from={'POST'} className={Styles.form} />
                 <List state = {postState} image={image}/>
             </div>
             )

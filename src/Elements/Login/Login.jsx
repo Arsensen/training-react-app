@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form} from 'react-final-form'
+import { Form } from 'react-final-form'
 import validators from './Validators'
 import { connect } from 'react-redux'
 import { login } from '../../Fetchers/fetchData'

@@ -4,7 +4,7 @@ import List from '../MainContent/List'
 import NameList from './NameList'
 import MCSS from './CSS/Messages.module.css'
 import { Route } from 'react-router-dom'
-import ContainerToForm from '../../Container/containerToForm'
+import Form from '../MainContent/Form'
 import { hocLogin } from '../../hocLogin'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -16,7 +16,7 @@ function Messages({messageState, names}){
                         <Route path='/messages' component={NameList.bind(null, {names})}></Route>
                     </div>
                     <div className={MCSS.messageList}>
-                        <ContainerToForm from={'MESSAGE'} />
+                        <Form from={'MESSAGE'} />
                         <List state={messageState} />
                     </div>
                 </div>   
