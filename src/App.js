@@ -16,7 +16,8 @@ function App() {
     <div className="App">
       <HeaderContainer />
       <Navbar />
-      <div className='mcontentCover'>
+      {console.log('APPPPP')}
+      <div className='mcontentCover'>  
         <Route path='/login' component={Login} />
         <Route exact path='/' component={Profile} />
         <Route exact path='/profile' component={Profile} />

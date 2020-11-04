@@ -1,5 +1,4 @@
 import React from 'react';
-/* import Form from '../MainContent/Form' */
 import List from '../MainContent/List'
 import NameList from './NameList'
 import MCSS from './CSS/Messages.module.css'
@@ -8,12 +7,14 @@ import Form from '../MainContent/Form'
 import { hocLogin } from '../../hocLogin'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { getMessSelector } from './Reselect-Test';
 
-function Messages({messageState, names}){
+function Messages({messageState}){
     return(
                 <div className={MCSS.messages}>
+                    {console.log('MESSSAGEEEEEE')}
                     <div className={MCSS.nameList}>
-                        <Route path='/messages' component={NameList.bind(null, {names})}></Route>
+                        <Route path='/messages' component={NameList}></Route>
                     </div>
                     <div className={MCSS.messageList}>
                         <Form from={'MESSAGE'} />
@@ -25,8 +26,7 @@ function Messages({messageState, names}){
 
 let mapState =(state)=>{
     return {
-        names: [...state.names],
-        messageState: [...state.messages.cache],
+        messageState: getMessSelector(state),
         authorized: state.profile.authorized
     }
 }

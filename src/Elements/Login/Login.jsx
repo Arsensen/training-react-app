@@ -5,16 +5,19 @@ import { connect } from 'react-redux'
 import { login } from '../../Fetchers/fetchData'
 import customField from './Fields'
 
-const LoginForm = (props)=> {
+const LoginForm = ({onSubmit, urlCaptcha, message})=> {
         return (
             <div>
+                { message && <div>{message}</div> }
                 <Form 
-                    onSubmit={ props.onSubmit }
+                    onSubmit={ onSubmit }
                     render={({ handleSubmit, submitting }) => (
                         <form onSubmit={handleSubmit}>
                             {customField('email', 'email', validators.required)}
                             {customField('password', 'password', validators.composeValidators(validators.required, validators.minValue(5)))}
                             {customField('rememberMe', 'checkbox')}
+                            {urlCaptcha && <img alt='captcha' src={urlCaptcha} />}
+                            {urlCaptcha && customField('captcha', 'text', validators.required)}
                             <button type="submit" disabled={submitting}>Login</button>
                         </form>
                     )}
@@ -23,13 +26,20 @@ const LoginForm = (props)=> {
         )
 }
 
-const Login = ({login})=>{
+const Login = ({login, urlCaptcha, message})=>{
     return (
         <div style={{'paddingLeft': '2rem'}}>
             <h2>Login</h2>
-            <LoginForm onSubmit={login} />
+            <LoginForm onSubmit={login} urlCaptcha={urlCaptcha} message={message} />
         </div>
     )
+}
+
+const mapState=(state)=>{
+    return{
+        urlCaptcha: state.profile.urlCaptcha,
+        message: state.profile.message
+    }
 }
 
 const mapDispatchToProps = (dispatch)=>{
@@ -38,7 +48,4 @@ const mapDispatchToProps = (dispatch)=>{
     }
 }
 
-
-
-
-export default connect(null, mapDispatchToProps)(Login)
+export default connect(mapState, mapDispatchToProps)(Login)

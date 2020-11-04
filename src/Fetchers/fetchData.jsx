@@ -10,21 +10,31 @@ const instance = Axios.create({
 
 export const data = ()=> (dispatch)=> instance.get('auth/me')
     .then(response=>{
+        if(response.resultCode) return
         dispatch({type: 'ADD_PROFILE', profile: {
             name: response.data.data.login,
             photo: undefined
         }})
-        !response.resultCode && dispatch({type: 'AUTHORIZED'})
-    }
-)
+        dispatch({type: 'AUTHORIZED'})
+        dispatch({type: 'ADD_WARNING', message: null})
+    })
+    .catch(err=>console.log(err))
 
-export const login = ({email, password, rememberMe})=>(dispatch)=>{
-    instance.post('auth/login', {email, password, rememberMe})
+const fetchCaptcha =()=> async (dispatch)=>{
+    let response = await instance.get('security/get-captcha-url')
+    response.status === 200 && dispatch({type: 'ADD_CAPTCHA', urlCaptcha: response.data.url})
+}
+
+export const login = ({email, password, rememberMe, captcha})=>(dispatch)=>{
+    instance.post('auth/login', {email, password, rememberMe, captcha})
         .then(
             response=>{
-                (response.data.resultCode === 0) && dispatch(data())
+                if(response.data.resultCode === 1 || response.data.resultCode === 10) dispatch(fetchCaptcha())
+                if(response.data.resultCode) return dispatch({type: 'ADD_WARNING', message: response.data.messages[0]})
+                dispatch(data())
             }
         )
+        .catch(err=>console.log(err))
 }
 
 export const logout = ()=>(dispatch)=>{
@@ -32,18 +42,23 @@ export const logout = ()=>(dispatch)=>{
             .then(response=>{
                 response.data.resultCode === 0 && dispatch({type: 'UNAUTHORIZED'})
             })
+            .catch(err=>console.log(err))
 }
 
-export const unfollow = (user, index)=> (dispatch, getState)=> {
+export const unfollow = (user, index)=> async (dispatch, getState)=> {
     if(getState().users.isFetching) return
     dispatch({type: 'CHANGE_FETCHING', isFetching: true})
-    let follow = user.followed ==='followed'? instance.delete('follow/' + user.id , {}) : instance.post('follow/' + user.id, {})
-    follow.then(response=>{
-                !response.data.resultCode && dispatch({ type: 'CHANGE_FOLLOW', index: index })
-                dispatch({type: 'CHANGE_FETCHING', isFetching: false})
-            })
+    try{
+        let response = await (user.followed ==='followed'? instance.delete('follow/' + user.id , {}) : instance.post('follow/' + user.id, {}))
+        !response.data.resultCode && dispatch({ type: 'CHANGE_FOLLOW', index: index })
+    }catch(err){
+        console.log('Autorization problems')
+        console.log(err)
+    }
+    finally{
+        dispatch({type: 'CHANGE_FETCHING', isFetching: false})
+    }
 }
-
 
 export const pages = (count)=> (dispatch)=> {
         instance.get('users?page=' + count)
@@ -64,8 +79,9 @@ export const pages = (count)=> (dispatch)=> {
     
 }
 
-export const fetchID = (id, addProfile)=>(dispatch)=>{
+export const fetchID = (id)=>(dispatch)=>{
     if(!id) return
+    debugger
     instance.get( 'profile/' + id)
         .then(response=>{
                 dispatch({type: 'ADD_PROFILE', profile: {photo: response.data.photos.large, name: response.data.fullName, id: response.data.UserId}})
