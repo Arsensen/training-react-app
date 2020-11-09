@@ -4,7 +4,6 @@ const namesReducer = (state = initialState, action)=>{
     switch(action.type){
         case 'NAME_CHANGE':
             let newState = [...state]
-            newState.shift()
             newState.unshift({name: action.name, id: action.count})
             return newState
         default:

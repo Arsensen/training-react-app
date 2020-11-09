@@ -20,7 +20,7 @@ export const data = ()=> (dispatch)=> instance.get('auth/me')
     })
     .catch(err=>console.log(err))
 
-const fetchCaptcha =()=> async (dispatch)=>{
+const fetchCaptcha = ()=> async (dispatch)=>{
     let response = await instance.get('security/get-captcha-url')
     response.status === 200 && dispatch({type: 'ADD_CAPTCHA', urlCaptcha: response.data.url})
 }
@@ -81,7 +81,6 @@ export const pages = (count)=> (dispatch)=> {
 
 export const fetchID = (id)=>(dispatch)=>{
     if(!id) return
-    debugger
     instance.get( 'profile/' + id)
         .then(response=>{
                 dispatch({type: 'ADD_PROFILE', profile: {photo: response.data.photos.large, name: response.data.fullName, id: response.data.UserId}})

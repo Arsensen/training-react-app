@@ -5,7 +5,6 @@ import Styles from './CSS/MainContent.module.css'
 import { useEffect } from 'react'
 
 const MainContent =({getID, match, profileState, postState})=>{
-    debugger
     useEffect(getID.bind(null, match.params.userID), [match.params.userID])
     let image = <img src={profileState.photo || 'https://avatars.mds.yandex.net/get-pdb/245485/8bd99b4a-58f7-418d-a8d7-77c4372ef967/s1200'} alt="Profile foto"/>
     return (

@@ -1,20 +1,23 @@
-import React from 'react'
+import React, { memo, useState } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { compose } from 'redux'
 import { getNamesSelector } from './Reselect-Test'
 
-function NameList({names, nameChanger}){
+const NameList = memo(({names, nameChanger}) =>{
+    let [count, setCount] = useState(4)
     return ( 
     <>
         <ul>
             { names.map(person=>{
                 return <li key={person.id}><NavLink to={`/messages/${person.id}`}>{person.name}</NavLink></li>
             })}
-        </ul>  
-        <button onClick={()=>nameChanger(0)}>Reselect-Test</button>
+        </ul>
+        <button onClick={()=>{nameChanger(count); setCount(c=>c+1)}}>Reselect-Test</button>
     </>
     )    
-}
+}, (prevProps, nextProps)=> prevProps.names === nextProps.names ? true: false
+)
 
 const mapStateToProps = (state)=>{
     return{
@@ -29,4 +32,6 @@ const mapDispatchToProps = (dispatch)=>{
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(NameList)
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps)
+) ( NameList )

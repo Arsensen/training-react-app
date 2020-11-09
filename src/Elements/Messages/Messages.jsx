@@ -10,8 +10,10 @@ import { compose } from 'redux';
 import { getMessSelector } from './Reselect-Test';
 
 function Messages({messageState}){
+    
     return(
                 <div className={MCSS.messages}>
+                    {console.log(this)}
                     {console.log('MESSSAGEEEEEE')}
                     <div className={MCSS.nameList}>
                         <Route path='/messages' component={NameList}></Route>

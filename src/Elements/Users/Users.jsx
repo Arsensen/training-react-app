@@ -27,7 +27,8 @@ const Users = ({adder, users, serverUnfollow})=> {
             setPages(array)
         }
     
-        useEffect(adder.bind(null, pages[0]), [pages])
+        useEffect(()=> {adder(pages[0])}
+        , [pages, adder])
     
         return(
             <React.Fragment>
